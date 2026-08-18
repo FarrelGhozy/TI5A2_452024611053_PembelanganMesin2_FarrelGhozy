@@ -13,18 +13,25 @@ from collections import defaultdict
 IMG_EXTS = {'.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff'}
 
 
-def find_class_dirs(root):
-    """Cari folder yang berisi gambar = folder kelas."""
-    class_dirs = []
-    for entry in sorted(os.listdir(root)):
-        full = os.path.join(root, entry)
-        if not os.path.isdir(full):
+def find_class_dirs(root, max_depth=4):
+    """Cari rekursif semua folder yang berisi gambar langsung (= folder kelas)."""
+    found = []
+    queue = [(root, 0)]
+    while queue:
+        d, depth = queue.pop(0)
+        if depth > max_depth or not os.path.isdir(d):
             continue
-        # cek isi: langsung gambar, atau subfolder (mis. color/)
-        has_imgs = any(f.lower().endswith(tuple(IMG_EXTS)) for f in os.listdir(full))
-        if has_imgs:
-            class_dirs.append(full)
-    return class_dirs
+        for e in sorted(os.listdir(d)):
+            full = os.path.join(d, e)
+            if not os.path.isdir(full):
+                continue
+            children = os.listdir(full)
+            has_imgs = any(f.lower().endswith(tuple(IMG_EXTS)) for f in children)
+            if has_imgs:
+                found.append(full)
+            else:
+                queue.append((full, depth + 1))
+    return found
 
 
 def collect_images(class_dirs):
@@ -60,18 +67,15 @@ def main():
     else:
         print(f'[1/3] {extract_dir} sudah ada, skip unzip')
 
-    # ---- cari folder kelas (bisa 1 level atau 2 level) ----
+    # ---- cari folder kelas (rekursif, bisa beberapa level) ----
     class_dirs = find_class_dirs(extract_dir)
     if not class_dirs:
-        # coba 1 level lebih dalam
-        for sub in sorted(os.listdir(extract_dir)):
-            full = os.path.join(extract_dir, sub)
-            if os.path.isdir(full):
-                class_dirs = find_class_dirs(full)
-                if class_dirs:
-                    break
-    if not class_dirs:
         raise SystemExit('Tidak menemukan folder kelas! Cek struktur zip.')
+    # dataset ini punya 3 varian (color/grayscale/segmented) — pilih 'color'
+    colored = [d for d in class_dirs if 'color' in d.replace(os.sep, '/').lower()]
+    if colored and len(colored) < len(class_dirs):
+        print(f'[2/3] Filter varian: {len(class_dirs)} folder kelas → {len(colored)} (color only)')
+        class_dirs = colored
 
     mapping = collect_images(class_dirs)
     print(f'[2/3] Ditemukan {len(mapping)} kelas, total {sum(len(v) for v in mapping.values())} gambar')

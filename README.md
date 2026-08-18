@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project implements a real-time plant disease detection system using deep learning with transfer learning. The system is designed for mobile deployment using lightweight models optimized for edge devices.
+This project implements plant disease detection using deep learning with transfer learning. The system is designed for mobile deployment using lightweight models optimized for edge devices.
 
 **Author:**  
 - Farrel Ghozy Affifudin (452024611053)
@@ -10,16 +10,74 @@ This project implements a real-time plant disease detection system using deep le
 **Class:** TI5 A2  
 **University:** Universitas Darussalam Gontor
 
----
-
-## Objectives
-
-1. Evaluate three lightweight deep learning models (MobileNetV2, MobileNetV3-Small, EfficientNet-B0) on the PlantVillage dataset
-2. Implement comprehensive data augmentation pipeline for improved model robustness
-3. Deploy the trained model on mobile devices using TensorFlow Lite
-4. Analyze model performance in terms of accuracy, precision, recall, F1-score, and inference time
+**Final Project Status:** v2 experiments completed — 4 scenarios run on NVIDIA RTX 4060 (CUDA), paper drafted in `paper/`.
 
 ---
+
+## Repository Structure
+
+```
+├── Instruksi Tugas.pdf      # Task instructions (IEEE conference paper)
+├── paper/                   # Final paper (LaTeX + PDF, NIM-named)
+│   ├── plant_disease_detection.tex
+│   ├── plant_disease_detection.pdf
+│   └── 452024611053-Farrel Ghozy Affifudin.pdf   # <-- FILE TO SUBMIT
+├── v1/                      # Legacy draft (old TF scripts, proposal, notebooks)
+│   ├── colab_notebook.ipynb
+│   ├── kaggle_notebook.ipynb
+│   ├── scripts/             # v1 TF training scripts
+│   └── tex/                 # v1 proposal draft
+└── v2/                      # v2 experiments (PyTorch + CUDA)
+    ├── scripts/             # common.py, prepare_data.py, run_experiment.py
+    └── results/             # training evidence: metrics, curves, CM, error analysis
+        ├── training_report.ipynb   # summary notebook (bukti training)
+        └── run_all.log             # full training log
+```
+
+---
+
+## v2 Experiments (Final Project)
+
+**Dataset:** PlantVillage (Kaggle) — 38 classes, 54,305 images, split 80/10/10 (43,429 / 5,417 / 5,459).
+**Hardware:** NVIDIA RTX 4060, CUDA 12.4, mixed precision FP16. Optimizer Adam, batch 32, early stopping.
+
+| Exp | Model | Strategy | Test Acc | Precision | Recall | F1 |
+|-----|-------|----------|----------|-----------|--------|-----|
+| E1 | Custom CNN (0.54M) | From scratch (baseline) | **95.95%** | 95.73% | 93.66% | 94.16% |
+| E2 | MobileNetV3-Small | TL, frozen backbone | **97.14%** | 96.51% | 96.43% | 96.37% |
+| E3 | EfficientNet-B0 | TL, frozen backbone | **95.00%** | 94.18% | 93.21% | 93.50% |
+| E4 | MobileNetV3-Small | TL, full fine-tune | **99.62%** | 99.55% | 99.23% | 99.38% |
+
+**Best model:** MobileNetV3-Small fine-tuned (E4) — 99.62% test accuracy.
+
+### Reproduce
+
+```bash
+# 1. Download dataset (Kaggle API token required)
+curl -L -o ~/pm2_v2/data/plantvillage.zip \
+  "https://www.kaggle.com/api/v1/datasets/download/abdallahalidev/plantvillage-dataset" \
+  -H "Authorization: Bearer <KAGGLE_ACCESS_TOKEN>"
+
+# 2. Prepare split
+python3 v2/scripts/prepare_data.py
+
+# 3. Run experiments (RTX 4060 / CUDA)
+python3 v2/scripts/run_experiment.py --exp e1 --epochs 15
+python3 v2/scripts/run_experiment.py --exp e2 --epochs 12
+python3 v2/scripts/run_experiment.py --exp e3 --epochs 12
+python3 v2/scripts/run_experiment.py --exp e4 --epochs 12
+```
+
+Training evidence (metrics JSON, training curves, confusion matrices, per-class analysis,
+top misclassifications) is stored in `v2/results/<exp>/`. See `v2/results/training_report.ipynb`
+for the summary notebook.
+
+---
+
+## v1 (Legacy) — Mobile Deployment Prototype
+
+Objectives: evaluate lightweight models (MobileNetV2, MobileNetV3-Small, EfficientNet-B0) on
+PlantVillage for TensorFlow Lite mobile deployment (Andromeda integration).
 
 ## Dataset
 
