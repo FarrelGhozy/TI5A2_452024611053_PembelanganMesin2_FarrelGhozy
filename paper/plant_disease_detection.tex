@@ -36,11 +36,11 @@ farrelghozyaffifudin@gmail.com}
 \maketitle
 
 \begin{abstract}
-Penyakit tanaman merupakan salah satu faktor utama penurunan produktivitas pertanian, dan deteksi dini yang akurat menjadi kunci dalam pengendaliannya. Penelitian ini melakukan studi eksperimen klasifikasi 38 jenis penyakit dan kondisi sehat daun tanaman menggunakan arsitektur deep learning pada dataset PlantVillage (54.305 citra). Empat skenario eksperimen dibandingkan: (1) Custom CNN yang dilatih dari nol sebagai baseline, (2) MobileNetV3-Small dengan transfer learning dan backbone dibekukan, (3) EfficientNet-B0 dengan transfer learning dan backbone dibekukan, serta (4) MobileNetV3-Small dengan fine-tuning penuh. Seluruh model dilatih pada GPU NVIDIA RTX 4060 dengan konfigurasi training yang seragam (Adam, batch size 32, early stopping). Hasil menunjukkan bahwa MobileNetV3-Small dengan fine-tuning penuh mencapai akurasi test terbaik sebesar 99,62\% (F1 99,38\%), diikuti MobileNetV3-Small transfer learning dengan akurasi 97,14\%. Custom CNN baseline yang dilatih dari nol justru mengungguli EfficientNet-B0 yang backbone-nya dibekukan (95,95\% vs 95,00\%), mengindikasikan bahwa jumlah parameter trainable lebih menentukan daripada ukuran arsitektur pada dataset berskala besar. Analisis kesalahan menunjukkan confusi dominan antar kelas penyakit bercak daun tomat yang memiliki kemiripan visual tinggi, seperti Early blight dan Septoria leaf spot.
+Penyakit tanaman merupakan salah satu faktor utama penurunan produktivitas pertanian, dan deteksi dini yang akurat menjadi kunci dalam pengendaliannya. Penelitian ini melakukan studi eksperimen klasifikasi 38 jenis penyakit dan kondisi sehat daun tanaman menggunakan arsitektur deep learning pada dataset PlantVillage (54.305 citra). Empat skenario eksperimen dibandingkan: (1) Custom CNN yang dilatih dari nol sebagai baseline, (2) MobileNetV3-Small dengan transfer learning dan backbone dibekukan, (3) EfficientNet-B0 dengan transfer learning dan backbone dibekukan, serta (4) MobileNetV3-Small dengan fine-tuning penuh. Seluruh model dilatih pada GPU NVIDIA RTX 4060 dengan konfigurasi training yang seragam (Adam, batch size 32, early stopping). Hasil menunjukkan bahwa MobileNetV3-Small dengan fine-tuning penuh mencapai akurasi test terbaik sebesar 98,99\% (F1 98,42\%), diikuti MobileNetV3-Small transfer learning dengan akurasi 97,47\%. Custom CNN baseline yang dilatih dari nol berada sedikit di atas EfficientNet-B0 yang backbone-nya dibekukan (95,09\% vs 94,98\%), mengindikasikan bahwa jumlah parameter trainable lebih menentukan daripada ukuran arsitektur pada dataset berskala besar. Analisis kesalahan menunjukkan confusi dominan antar kelas penyakit bercak daun (tomat dan jagung) yang memiliki kemiripan visual tinggi.
 \end{abstract}
 
 \begin{IEEEkeywords}
-plant disease detection, deep learning, transfer learning, MobileNetV3, EfficientNet, CNN
+plant disease detection, deep learning, transfer learning, MobileNetV3, EfficientNet
 \end{IEEEkeywords}
 
 % =====================================================================
@@ -63,7 +63,7 @@ Untuk penerapan pada perangkat dengan sumber daya terbatas, arsitektur lightweig
 \section{Methodology}
 
 \subsection{Dataset}
-Penelitian ini menggunakan dataset PlantVillage [7] yang diperoleh dari Kaggle (Abdallah Ali, \emph{PlantVillage Dataset}). Dataset terdiri dari 54.305 citra daun berwarna (RGB) yang terbagi dalam 38 kelas, mencakup 14 spesies tanaman (apel, tomat, kentang, anggur, jagung, dan lain-lain) dengan kondisi sehat dan berbagai penyakit. Distribusi citra antar kelas tidak seragam: kelas dengan jumlah citra terbanyak adalah Tomato\_YellowLeaf\_Curl\_Virus (5.357 citra), sedangkan kelas terkecil adalah Potato\_Early\_blight\_healthy (152 citra), sehingga dataset bersifat \emph{imbalanced} pada tingkat tertentu.
+Penelitian ini menggunakan dataset PlantVillage [7] yang diperoleh dari Kaggle (Abdallah Ali, \emph{PlantVillage Dataset}). Dataset terdiri dari 54.305 citra daun berwarna (RGB) yang terbagi dalam 38 kelas, mencakup 14 spesies tanaman (apel, tomat, kentang, anggur, jagung, dan lain-lain) dengan kondisi sehat dan berbagai penyakit. Distribusi citra antar kelas tidak seragam: kelas dengan jumlah citra terbanyak adalah Orange\_Haunglongbing (Citrus greening) (5.507 citra), sedangkan kelas terkecil adalah Potato\_healthy (152 citra), sehingga dataset bersifat \emph{imbalanced} pada tingkat tertentu.
 
 Seluruh citra di-resize ke 224$\times$224 piksel. Pembagian data dilakukan secara \emph{stratified random split} dengan proporsi 80\% training (43.429 citra), 10\% validasi (5.417 citra), dan 10\% testing (5.459 citra).
 
@@ -122,21 +122,21 @@ Tabel \ref{tab:results} menampilkan hasil evaluasi keempat skenario pada test se
 \toprule
 \textbf{Model} & \textbf{Acc} & \textbf{Prec} & \textbf{Rec} & \textbf{F1} \\
 \midrule
-E1: Custom CNN (baseline) & 0,9595 & 0,9573 & 0,9366 & 0,9416 \\
-E2: MobileNetV3 frozen    & 0,9714 & 0,9651 & 0,9643 & 0,9637 \\
-E3: EfficientNet-B0 frozen & 0,9500 & 0,9418 & 0,9321 & 0,9350 \\
-\textbf{E4: MobileNetV3 fine-tune} & \textbf{0,9962} & \textbf{0,9955} & \textbf{0,9923} & \textbf{0,9938} \\
+E1: Custom CNN (baseline) & 0,9509 & 0,9485 & 0,9317 & 0,9339 \\
+E2: MobileNetV3 frozen    & 0,9747 & 0,9679 & 0,9618 & 0,9641 \\
+E3: EfficientNet-B0 frozen & 0,9498 & 0,9417 & 0,9319 & 0,9348 \\
+\textbf{E4: MobileNetV3 fine-tune} & \textbf{0,9899} & \textbf{0,9881} & \textbf{0,9815} & \textbf{0,9842} \\
 \bottomrule
 \end{tabular}
 \end{center}
 \end{table}
 
-Hasil menunjukkan bahwa seluruh model mencapai akurasi di atas 95\%, mengonfirmasi bahwa dataset PlantVillage relatif mudah dipelajari oleh CNN modern. MobileNetV3-Small dengan fine-tuning penuh (E4) menjadi model terbaik dengan akurasi test 99,62\% dan F1 99,38\%, diikuti MobileNetV3-Small dengan backbone dibekukan (E2) sebesar 97,14\%. Fine-tuning penuh memberikan peningkatan akurasi sebesar 2,48 poin persentase dibandingkan pendekatan frozen, karena seluruh representasi fitur ImageNet diadaptasi terhadap karakteristik citra daun. Kedua skenario MobileNetV3 mengungguli EfficientNet-B0 (E3) meskipun ukuran modelnya lebih kecil (1,56M vs 4,06M parameter).
+Hasil menunjukkan bahwa seluruh model mencapai akurasi di atas 94\%, mengonfirmasi bahwa dataset PlantVillage relatif mudah dipelajari oleh CNN modern. MobileNetV3-Small dengan fine-tuning penuh (E4) menjadi model terbaik dengan akurasi test 98,99\% dan F1 98,42\%, diikuti MobileNetV3-Small dengan backbone dibekukan (E2) sebesar 97,47\%. Fine-tuning penuh memberikan peningkatan akurasi sebesar 1,52 poin persentase dibandingkan pendekatan frozen, karena seluruh representasi fitur ImageNet diadaptasi terhadap karakteristik citra daun. Kedua skenario MobileNetV3 mengungguli EfficientNet-B0 (E3) meskipun ukuran modelnya lebih kecil (1,56M vs 4,06M parameter).
 
-Temuan yang menarik adalah Custom CNN yang dilatih dari nol (E1, 95,95\%) mengungguli EfficientNet-B0 dengan backbone dibekukan (E3, 95,00\%). Hal ini dapat dijelaskan oleh jumlah parameter trainable yang jauh berbeda: E1 melatih 540.454 parameter penuh, sedangkan E3 hanya melatih head 48.678 parameter. Dengan 43.429 citra training yang besar, model kecil yang dilatih penuh memiliki kapasitas yang cukup untuk mempelajari representasi spesifik dataset, sementara fitur ImageNet yang dibekukan pada EfficientNet-B0 tidak sepenuhnya optimal untuk karakteristik citra daun. Sebaliknya, MobileNetV3-Small (E2) memiliki classifier dua lapis (576$\rightarrow$1024$\rightarrow$38) dengan 629.798 parameter trainable yang lebih representatif, sehingga lebih unggul.
+Temuan yang menarik adalah Custom CNN yang dilatih dari nol (E1, 95,09\%) sedikit di atas EfficientNet-B0 dengan backbone dibekukan (E3, 94,98\%) meskipun arsitekturnya jauh lebih sederhana. Hal ini dapat dijelaskan oleh jumlah parameter trainable yang jauh berbeda: E1 melatih 540.454 parameter penuh, sedangkan E3 hanya melatih head 48.678 parameter. Dengan 43.429 citra training yang besar, model kecil yang dilatih penuh memiliki kapasitas yang cukup untuk mempelajari representasi spesifik dataset, sementara fitur ImageNet yang dibekukan pada EfficientNet-B0 tidak sepenuhnya optimal untuk karakteristik citra daun. Sebaliknya, MobileNetV3-Small (E2) memiliki classifier dua lapis (576$\rightarrow$1024$\rightarrow$38) dengan 629.798 parameter trainable yang lebih representatif, sehingga lebih unggul.
 
 \subsection{Analisis Overfitting dan Underfitting}
-Kurva training (Gambar \ref{fig:curves}) menunjukkan bahwa pada E4 (model terbaik) tidak terjadi overfitting yang signifikan: validation loss terus menurun hingga epoch terakhir (12) tanpa peningkatan gap yang berarti terhadap training loss, sehingga early stopping tidak terpicu. Pada E2 dan E3, selisih antara training dan validation accuracy juga relatif kecil dan validation loss menurun stabil. Pada E1, gap accuracy training-validation sedikit lebih besar namun tetap stabil, konsisten dengan kapasitas model yang lebih kecil. Penggunaan early stopping dan ReduceLROnPlateau mencegah overfitting pada epoch akhir seluruh skenario.
+Kurva training (Gambar \ref{fig:curves}) menunjukkan bahwa pada E4 (model terbaik) tidak terjadi overfitting yang signifikan: validation loss mencapai minimum 0,0244 di epoch 6, dan early stopping menghentikan training di epoch 10 setelah empat epoch tanpa perbaikan. Gap antara training dan validation accuracy tetap kecil (0,60 poin di epoch terakhir), dan training loss terus menurun hingga 0,0115 tanpa divergence. Pada E2 dan E3, selisih antara training dan validation accuracy juga relatif kecil dan validation loss menurun stabil. Pada E1, gap accuracy training-validation sedikit lebih besar namun tetap stabil, konsisten dengan kapasitas model yang lebih kecil. Penggunaan early stopping dan ReduceLROnPlateau mencegah overfitting pada epoch akhir seluruh skenario.
 
 \begin{figure}[htbp]
 \centering
@@ -146,12 +146,12 @@ Kurva training (Gambar \ref{fig:curves}) menunjukkan bahwa pada E4 (model terbai
 \end{figure}
 
 \subsection{Error Analysis}
-Gambar \ref{fig:cm} menampilkan confusion matrix model E2 (transfer learning, backbone dibekukan). Model E2 dipilih untuk analisis kesalahan karena akurasinya yang tinggi (97,14\%) namun masih memiliki cukup banyak kesalahan untuk dianalisis polanya, berbeda dengan E4 yang confusion matrix-nya hampir diagonal sempurna. Analisis akurasi per kelas menunjukkan bahwa kesalahan klasifikasi terkonsentrasi pada kelompok penyakit tomat: kelas terburuk adalah Tomato\_Early\_blight (68,00\%), diikuti Potato\_healthy (87,50\%), Tomato\_Spider\_mites (89,94\%), Corn\_Northern\_Leaf\_Blight (90,91\%), dan Grape\_Black\_rot (91,53\%). Pasangan kelas yang paling sering tertukar adalah:
+Gambar \ref{fig:cm} menampilkan confusion matrix model E2 (transfer learning, backbone dibekukan). Model E2 dipilih untuk analisis kesalahan karena akurasinya yang tinggi (97,47\%) namun masih memiliki cukup banyak kesalahan untuk dianalisis polanya, berbeda dengan E4 yang confusion matrix-nya hampir diagonal sempurna. Analisis akurasi per kelas menunjukkan bahwa kelas terburuk adalah Potato\_healthy (75,00\%), diikuti Tomato\_Early\_blight (79,00\%), Corn\_Northern\_Leaf\_Blight (89,90\%), dan Tomato\_Spider\_mites (89,94\%). Pasangan kelas yang paling sering tertukar adalah:
 \begin{itemize}
 \item \emph{Tomato\_Early\_blight} $\rightarrow$ \emph{Tomato\_Septoria\_leaf\_spot}: kedua penyakit menimbulkan bercak nekrotik berwarna coklat pada daun tomat yang sulit dibedakan secara visual.
-\item \emph{Tomato\_Early\_blight} $\rightarrow$ \emph{Pepper\_bell\_Bacterial\_spot} dan \emph{Tomato\_Spider\_mites}: lesi dan bercak klorotik pada fase awal memiliki penampakan yang mirip antar spesies dan jenis patogen.
+\item \emph{Corn\_Northern\_Leaf\_Blight} $\rightarrow$ \emph{Corn\_Cercospora\_leaf\_spot}: penyakit bercak daun jagung dengan pola lesi yang serupa.
 \item \emph{Tomato\_Spider\_mites} $\leftrightarrow$ \emph{Tomato\_Target\_Spot}: kedua kelas saling tertukar, menunjukkan kemiripan pola bintik pada daun.
-\item \emph{Tomato\_Late\_blight} $\rightarrow$ \emph{Tomato\_Leaf\_Mold} dan \emph{Tomato\_Early\_blight}: kelompok bercak daun tomat yang secara visual hampir identik.
+\item Confusi antar spesies: \emph{Tomato\_Bacterial\_spot} $\rightarrow$ \emph{Apple\_Apple\_scab} dan \emph{Orange\_Haunglongbing} $\rightarrow$ \emph{Soybean\_healthy}, mengindikasikan bahwa pada kasus tertentu model lebih mengandalkan tekstur daun daripada identitas spesies.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -166,7 +166,7 @@ Confusi antar kelas sejenis tersebut wajar karena kelas-kelas tersebut berbagi l
 % =====================================================================
 \section{Conclusion}
 
-Penelitian ini mengevaluasi empat skenario eksperimen klasifikasi penyakit tanaman pada dataset PlantVillage (38 kelas, 54.305 citra) menggunakan arsitektur deep learning lightweight. MobileNetV3-Small dengan fine-tuning penuh mencapai akurasi test terbaik 99,62\% (F1 99,38\%), menjadikannya kandidat terbaik untuk penerapan pada perangkat edge. Eksperimen juga menunjukkan bahwa fine-tuning penuh meningkatkan akurasi sebesar 2,48 poin dibandingkan backbone yang dibekukan, dan jumlah parameter trainable lebih berpengaruh terhadap performa daripada ukuran arsitektur ketika dataset cukup besar: CNN baseline yang dilatih dari nol (95,95\%) mengungguli EfficientNet-B0 dengan backbone dibekukan (95,00\%). Keterbatasan penelitian ini adalah penggunaan dataset laboratorium yang relatif bersih; validasi pada citra lapangan dan eksplorasi augmentasi yang lebih agresif menjadi arah pengembangan selanjutnya.
+Penelitian ini mengevaluasi empat skenario eksperimen klasifikasi penyakit tanaman pada dataset PlantVillage (38 kelas, 54.305 citra) menggunakan arsitektur deep learning lightweight. MobileNetV3-Small dengan fine-tuning penuh mencapai akurasi test terbaik 98,99\% (F1 98,42\%), menjadikannya kandidat terbaik untuk penerapan pada perangkat edge. Eksperimen juga menunjukkan bahwa fine-tuning penuh meningkatkan akurasi sebesar 1,52 poin dibandingkan backbone yang dibekukan, dan jumlah parameter trainable lebih berpengaruh terhadap performa daripada ukuran arsitektur ketika dataset cukup besar: CNN baseline yang dilatih dari nol (95,09\%) sedikit di atas EfficientNet-B0 dengan backbone dibekukan (94,98\%). Keterbatasan penelitian ini adalah penggunaan dataset laboratorium yang relatif bersih; validasi pada citra lapangan dan eksplorasi augmentasi yang lebih agresif menjadi arah pengembangan selanjutnya.
 
 % =====================================================================
 \section*{Acknowledgment}

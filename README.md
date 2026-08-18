@@ -38,12 +38,12 @@ This project implements plant disease detection using deep learning with transfe
 
 | Exp | Model | Strategy | Test Acc | Precision | Recall | F1 |
 |-----|-------|----------|----------|-----------|--------|-----|
-| E1 | Custom CNN (0.54M) | From scratch (baseline) | **95.95%** | 95.73% | 93.66% | 94.16% |
-| E2 | MobileNetV3-Small | TL, frozen backbone | **97.14%** | 96.51% | 96.43% | 96.37% |
-| E3 | EfficientNet-B0 | TL, frozen backbone | **95.00%** | 94.18% | 93.21% | 93.50% |
-| E4 | MobileNetV3-Small | TL, full fine-tune | **99.62%** | 99.55% | 99.23% | 99.38% |
+| E1 | Custom CNN (0.54M) | From scratch (baseline) | **95.09%** | 94.85% | 93.17% | 93.39% |
+| E2 | MobileNetV3-Small | TL, frozen backbone | **97.47%** | 96.79% | 96.18% | 96.41% |
+| E3 | EfficientNet-B0 | TL, frozen backbone | **94.98%** | 94.17% | 93.19% | 93.48% |
+| E4 | MobileNetV3-Small | TL, full fine-tune | **98.99%** | 98.81% | 98.15% | 98.42% |
 
-**Best model:** MobileNetV3-Small fine-tuned (E4) — 99.62% test accuracy.
+**Best model:** MobileNetV3-Small fine-tuned (E4) — 98.99% test accuracy.
 
 ### Reproduce
 

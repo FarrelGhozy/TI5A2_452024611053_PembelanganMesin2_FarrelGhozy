@@ -1,61 +1,49 @@
 {
   "worst": [
     {
+      "class": "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
+      "acc": 0.7884615384615384
+    },
+    {
       "class": "Potato___healthy",
       "acc": 0.875
     },
     {
+      "class": "Tomato___Leaf_Mold",
+      "acc": 0.8958333333333334
+    },
+    {
       "class": "Tomato___Early_blight",
-      "acc": 0.96
+      "acc": 0.93
     },
     {
-      "class": "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
-      "acc": 0.9615384615384616
+      "class": "Apple___Cedar_apple_rust",
+      "acc": 0.9642857142857143
     },
     {
-      "class": "Corn_(maize)___Northern_Leaf_Blight",
-      "acc": 0.9696969696969697
+      "class": "Potato___Late_blight",
+      "acc": 0.97
+    },
+    {
+      "class": "Tomato___Spider_mites Two-spotted_spider_mite",
+      "acc": 0.9763313609467456
+    },
+    {
+      "class": "Apple___Black_rot",
+      "acc": 0.9841269841269841
+    },
+    {
+      "class": "Tomato___Bacterial_spot",
+      "acc": 0.985981308411215
     },
     {
       "class": "Cherry_(including_sour)___healthy",
       "acc": 0.9883720930232558
-    },
-    {
-      "class": "Tomato___Leaf_Mold",
-      "acc": 0.9895833333333334
-    },
-    {
-      "class": "Potato___Late_blight",
-      "acc": 0.99
-    },
-    {
-      "class": "Corn_(maize)___Common_rust_",
-      "acc": 0.9916666666666667
-    },
-    {
-      "class": "Tomato___Spider_mites Two-spotted_spider_mite",
-      "acc": 0.9940828402366864
-    },
-    {
-      "class": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
-      "acc": 0.994413407821229
     }
   ],
   "best": [
     {
       "class": "Apple___Apple_scab",
-      "acc": 1.0
-    },
-    {
-      "class": "Apple___Black_rot",
-      "acc": 1.0
-    },
-    {
-      "class": "Apple___Cedar_apple_rust",
-      "acc": 1.0
-    },
-    {
-      "class": "Apple___healthy",
       "acc": 1.0
     },
     {
@@ -80,6 +68,18 @@
     },
     {
       "class": "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)",
+      "acc": 1.0
+    },
+    {
+      "class": "Grape___healthy",
+      "acc": 1.0
+    },
+    {
+      "class": "Orange___Haunglongbing_(Citrus_greening)",
+      "acc": 1.0
+    },
+    {
+      "class": "Peach___Bacterial_spot",
       "acc": 1.0
     }
   ]

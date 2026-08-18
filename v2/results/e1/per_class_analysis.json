@@ -6,39 +6,39 @@
     },
     {
       "class": "Tomato___Spider_mites Two-spotted_spider_mite",
-      "acc": 0.7396449704142012
-    },
-    {
-      "class": "Raspberry___healthy",
-      "acc": 0.7894736842105263
+      "acc": 0.6272189349112426
     },
     {
       "class": "Tomato___Early_blight",
-      "acc": 0.8
+      "acc": 0.68
     },
     {
-      "class": "Tomato___Target_Spot",
-      "acc": 0.8014184397163121
+      "class": "Tomato___Late_blight",
+      "acc": 0.78125
     },
     {
       "class": "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
       "acc": 0.8076923076923077
     },
     {
-      "class": "Tomato___Late_blight",
-      "acc": 0.859375
+      "class": "Tomato___Target_Spot",
+      "acc": 0.8652482269503546
     },
     {
       "class": "Peach___healthy",
-      "acc": 0.8611111111111112
+      "acc": 0.9166666666666666
     },
     {
-      "class": "Tomato___Leaf_Mold",
-      "acc": 0.9270833333333334
+      "class": "Raspberry___healthy",
+      "acc": 0.9210526315789473
     },
     {
       "class": "Tomato___Septoria_leaf_spot",
-      "acc": 0.9438202247191011
+      "acc": 0.9269662921348315
+    },
+    {
+      "class": "Strawberry___healthy",
+      "acc": 0.9361702127659575
     }
   ],
   "best": [
@@ -48,10 +48,6 @@
     },
     {
       "class": "Apple___Cedar_apple_rust",
-      "acc": 1.0
-    },
-    {
-      "class": "Cherry_(including_sour)___Powdery_mildew",
       "acc": 1.0
     },
     {
@@ -81,6 +77,10 @@
     {
       "class": "Tomato___healthy",
       "acc": 1.0
+    },
+    {
+      "class": "Apple___healthy",
+      "acc": 0.9939393939393939
     }
   ]
 }
