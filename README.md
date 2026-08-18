@@ -22,11 +22,6 @@ This project implements plant disease detection using deep learning with transfe
 │   ├── plant_disease_detection.tex
 │   ├── plant_disease_detection.pdf
 │   └── 452024611053-Farrel Ghozy Affifudin.pdf   # <-- FILE TO SUBMIT
-├── v1/                      # Legacy draft (old TF scripts, proposal, notebooks)
-│   ├── colab_notebook.ipynb
-│   ├── kaggle_notebook.ipynb
-│   ├── scripts/             # v1 TF training scripts
-│   └── tex/                 # v1 proposal draft
 └── v2/                      # v2 experiments (PyTorch + CUDA)
     ├── scripts/             # common.py, prepare_data.py, run_experiment.py
     └── results/             # training evidence: metrics, curves, CM, error analysis
@@ -73,11 +68,6 @@ top misclassifications) is stored in `v2/results/<exp>/`. See `v2/results/traini
 for the summary notebook.
 
 ---
-
-## v1 (Legacy) — Mobile Deployment Prototype
-
-Objectives: evaluate lightweight models (MobileNetV2, MobileNetV3-Small, EfficientNet-B0) on
-PlantVillage for TensorFlow Lite mobile deployment (Andromeda integration).
 
 ## Dataset
 
