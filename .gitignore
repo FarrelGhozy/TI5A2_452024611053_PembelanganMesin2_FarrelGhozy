@@ -1,0 +1,30 @@
+# ===== Data & artifacts (jangan di-commit) =====
+data/
+*.zip
+*.rar
+*.tar.gz
+
+# ===== Model checkpoints =====
+models/
+*.h5
+*.pt
+*.pth
+*.tflite
+
+# ===== Python =====
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ===== LaTeX build artifacts =====
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+texput.log
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
