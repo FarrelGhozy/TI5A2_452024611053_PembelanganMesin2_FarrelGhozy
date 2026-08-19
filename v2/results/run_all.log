@@ -1,0 +1,103 @@
+CANONICAL FINAL EXPERIMENT RECORD
+Generated from v2/results/<exp>/metrics.json and history.json.
+These artifacts correspond to the checkpoints in ~/pm2_v2/models.
+Hardware: NVIDIA GeForce RTX 4060; mixed precision FP16.
+
+########## E1 — Custom CNN baseline (from scratch) ##########
+Run time: 2026-08-18T20:06:36.591055
+Config: max_epochs=15 epochs_ran=15 batch=32 lr=0.001 optimizer=Adam loss=CrossEntropyLoss patience=4 seed=42
+Dataset: classes=38 train=43429 val=5417 test=5459
+Params: total=540,454 trainable=540,454
+Epoch 01/15 | train_loss=1.7164 train_acc=0.5001 | val_loss=1.3168 val_acc=0.6186 | lr=1.00e-03
+Epoch 02/15 | train_loss=1.0150 train_acc=0.6799 | val_loss=1.1190 val_acc=0.7032 | lr=1.00e-03
+Epoch 03/15 | train_loss=0.7713 train_acc=0.7516 | val_loss=0.6197 val_acc=0.8032 | lr=1.00e-03
+Epoch 04/15 | train_loss=0.6332 train_acc=0.7960 | val_loss=0.7896 val_acc=0.7639 | lr=1.00e-03
+Epoch 05/15 | train_loss=0.5238 train_acc=0.8311 | val_loss=0.3637 val_acc=0.8833 | lr=1.00e-03
+Epoch 06/15 | train_loss=0.4558 train_acc=0.8514 | val_loss=0.3776 val_acc=0.8796 | lr=1.00e-03
+Epoch 07/15 | train_loss=0.4035 train_acc=0.8683 | val_loss=0.3755 val_acc=0.8839 | lr=1.00e-03
+Epoch 08/15 | train_loss=0.3542 train_acc=0.8850 | val_loss=0.2394 val_acc=0.9276 | lr=1.00e-03
+Epoch 09/15 | train_loss=0.3201 train_acc=0.8944 | val_loss=0.2027 val_acc=0.9372 | lr=1.00e-03
+Epoch 10/15 | train_loss=0.2946 train_acc=0.9045 | val_loss=0.1960 val_acc=0.9406 | lr=1.00e-03
+Epoch 11/15 | train_loss=0.2692 train_acc=0.9123 | val_loss=0.1843 val_acc=0.9446 | lr=1.00e-03
+Epoch 12/15 | train_loss=0.2504 train_acc=0.9174 | val_loss=0.1602 val_acc=0.9479 | lr=1.00e-03
+Epoch 13/15 | train_loss=0.2311 train_acc=0.9236 | val_loss=0.3489 val_acc=0.8879 | lr=1.00e-03
+Epoch 14/15 | train_loss=0.2228 train_acc=0.9266 | val_loss=0.1351 val_acc=0.9566 | lr=1.00e-03
+Epoch 15/15 | train_loss=0.2114 train_acc=0.9311 | val_loss=0.2130 val_acc=0.9341 | lr=1.00e-03
+Best validation-loss epoch: 14 (val_loss=0.1351)
+Test Accuracy : 0.9509
+Precision     : 0.9485
+Recall        : 0.9317
+F1 (macro)    : 0.9339
+Training time : 717s (11.9 min)
+
+########## E2 — MobileNetV3-Small TL, backbone frozen ##########
+Run time: 2026-08-18T20:14:58.760638
+Config: max_epochs=12 epochs_ran=12 batch=32 lr=0.001 optimizer=Adam loss=CrossEntropyLoss patience=4 seed=42
+Dataset: classes=38 train=43429 val=5417 test=5459
+Params: total=1,556,806 trainable=629,798
+Epoch 01/12 | train_loss=0.4773 train_acc=0.8552 | val_loss=0.2319 val_acc=0.9258 | lr=1.00e-03
+Epoch 02/12 | train_loss=0.2634 train_acc=0.9125 | val_loss=0.2067 val_acc=0.9356 | lr=1.00e-03
+Epoch 03/12 | train_loss=0.2298 train_acc=0.9242 | val_loss=0.1772 val_acc=0.9441 | lr=1.00e-03
+Epoch 04/12 | train_loss=0.2089 train_acc=0.9311 | val_loss=0.1537 val_acc=0.9483 | lr=1.00e-03
+Epoch 05/12 | train_loss=0.1971 train_acc=0.9350 | val_loss=0.1601 val_acc=0.9476 | lr=1.00e-03
+Epoch 06/12 | train_loss=0.1861 train_acc=0.9398 | val_loss=0.2038 val_acc=0.9382 | lr=1.00e-03
+Epoch 07/12 | train_loss=0.1855 train_acc=0.9400 | val_loss=0.1621 val_acc=0.9522 | lr=5.00e-04
+Epoch 08/12 | train_loss=0.1268 train_acc=0.9571 | val_loss=0.1097 val_acc=0.9644 | lr=5.00e-04
+Epoch 09/12 | train_loss=0.1170 train_acc=0.9610 | val_loss=0.1243 val_acc=0.9596 | lr=5.00e-04
+Epoch 10/12 | train_loss=0.1131 train_acc=0.9612 | val_loss=0.1210 val_acc=0.9616 | lr=5.00e-04
+Epoch 11/12 | train_loss=0.1127 train_acc=0.9628 | val_loss=0.1141 val_acc=0.9629 | lr=2.50e-04
+Epoch 12/12 | train_loss=0.0872 train_acc=0.9707 | val_loss=0.0838 val_acc=0.9723 | lr=2.50e-04
+Best validation-loss epoch: 12 (val_loss=0.0838)
+Test Accuracy : 0.9747
+Precision     : 0.9679
+Recall        : 0.9618
+F1 (macro)    : 0.9641
+Training time : 497s (8.3 min)
+
+########## E3 — EfficientNet-B0 TL, backbone frozen ##########
+Run time: 2026-08-18T20:23:44.911273
+Config: max_epochs=12 epochs_ran=12 batch=32 lr=0.001 optimizer=Adam loss=CrossEntropyLoss patience=4 seed=42
+Dataset: classes=38 train=43429 val=5417 test=5459
+Params: total=4,056,226 trainable=48,678
+Epoch 01/12 | train_loss=0.6522 train_acc=0.8470 | val_loss=0.2885 val_acc=0.9249 | lr=1.00e-03
+Epoch 02/12 | train_loss=0.2937 train_acc=0.9148 | val_loss=0.2101 val_acc=0.9394 | lr=1.00e-03
+Epoch 03/12 | train_loss=0.2530 train_acc=0.9222 | val_loss=0.1925 val_acc=0.9402 | lr=1.00e-03
+Epoch 04/12 | train_loss=0.2319 train_acc=0.9263 | val_loss=0.1784 val_acc=0.9437 | lr=1.00e-03
+Epoch 05/12 | train_loss=0.2190 train_acc=0.9311 | val_loss=0.1766 val_acc=0.9430 | lr=1.00e-03
+Epoch 06/12 | train_loss=0.2127 train_acc=0.9320 | val_loss=0.1606 val_acc=0.9507 | lr=1.00e-03
+Epoch 07/12 | train_loss=0.2090 train_acc=0.9312 | val_loss=0.1740 val_acc=0.9446 | lr=1.00e-03
+Epoch 08/12 | train_loss=0.1999 train_acc=0.9346 | val_loss=0.1563 val_acc=0.9490 | lr=1.00e-03
+Epoch 09/12 | train_loss=0.1962 train_acc=0.9364 | val_loss=0.1622 val_acc=0.9479 | lr=1.00e-03
+Epoch 10/12 | train_loss=0.1928 train_acc=0.9367 | val_loss=0.1769 val_acc=0.9441 | lr=1.00e-03
+Epoch 11/12 | train_loss=0.1945 train_acc=0.9380 | val_loss=0.1478 val_acc=0.9520 | lr=1.00e-03
+Epoch 12/12 | train_loss=0.1978 train_acc=0.9340 | val_loss=0.1498 val_acc=0.9487 | lr=1.00e-03
+Best validation-loss epoch: 11 (val_loss=0.1478)
+Test Accuracy : 0.9498
+Precision     : 0.9417
+Recall        : 0.9319
+F1 (macro)    : 0.9348
+Training time : 518s (8.6 min)
+
+########## E4 — MobileNetV3-Small TL, fine-tune penuh ##########
+Run time: 2026-08-18T20:32:05.476320
+Config: max_epochs=12 epochs_ran=10 batch=32 lr=0.0001 optimizer=Adam loss=CrossEntropyLoss patience=4 seed=42
+Dataset: classes=38 train=43429 val=5417 test=5459
+Params: total=1,556,806 trainable=1,556,806
+Epoch 01/12 | train_loss=0.4726 train_acc=0.8757 | val_loss=0.1004 val_acc=0.9681 | lr=1.00e-04
+Epoch 02/12 | train_loss=0.0829 train_acc=0.9735 | val_loss=0.0595 val_acc=0.9802 | lr=1.00e-04
+Epoch 03/12 | train_loss=0.0507 train_acc=0.9835 | val_loss=0.0418 val_acc=0.9845 | lr=1.00e-04
+Epoch 04/12 | train_loss=0.0384 train_acc=0.9880 | val_loss=0.0455 val_acc=0.9838 | lr=1.00e-04
+Epoch 05/12 | train_loss=0.0320 train_acc=0.9895 | val_loss=0.0465 val_acc=0.9828 | lr=1.00e-04
+Epoch 06/12 | train_loss=0.0275 train_acc=0.9907 | val_loss=0.0244 val_acc=0.9930 | lr=1.00e-04
+Epoch 07/12 | train_loss=0.0253 train_acc=0.9915 | val_loss=0.0356 val_acc=0.9878 | lr=1.00e-04
+Epoch 08/12 | train_loss=0.0203 train_acc=0.9934 | val_loss=0.0275 val_acc=0.9911 | lr=1.00e-04
+Epoch 09/12 | train_loss=0.0190 train_acc=0.9940 | val_loss=0.0255 val_acc=0.9922 | lr=5.00e-05
+Epoch 10/12 | train_loss=0.0115 train_acc=0.9962 | val_loss=0.0245 val_acc=0.9904 | lr=5.00e-05
+Best validation-loss epoch: 6 (val_loss=0.0244)
+Test Accuracy : 0.9899
+Precision     : 0.9881
+Recall        : 0.9815
+F1 (macro)    : 0.9842
+Training time : 495s (8.3 min)
+
+NOTE: E4 triggered early stopping after epoch 10. E1-E3 reached their configured maximum epochs.

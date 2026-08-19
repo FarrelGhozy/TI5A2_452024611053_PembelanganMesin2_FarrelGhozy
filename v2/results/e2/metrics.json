@@ -13,7 +13,8 @@
     "augmentation": true,
     "early_stopping_patience": 4,
     "seed": 42,
-    "best_epoch": 12
+    "best_epoch": 12,
+    "epochs_ran": 12
   },
   "train_seconds": 497.021790266037,
   "best_val_loss": 0.08377060233117613,

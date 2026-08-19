@@ -20,6 +20,7 @@ venv/
 # ===== LaTeX build artifacts =====
 *.aux
 *.log
+!v2/results/run_all.log
 *.out
 *.toc
 *.synctex.gz

@@ -126,6 +126,7 @@ def main():
     scaler = torch.amp.GradScaler('cuda', enabled=True)
 
     best_val_loss = float('inf')
+    best_epoch = 0
     best_state = None
     history = {'train_loss': [], 'train_acc': [], 'val_loss': [], 'val_acc': [], 'lr': []}
     early_stop_counter = 0
@@ -148,6 +149,7 @@ def main():
 
         if va_loss < best_val_loss:
             best_val_loss = va_loss
+            best_epoch = epoch
             best_state = copy.deepcopy(model.state_dict())
             early_stop_counter = 0
         else:
@@ -171,7 +173,8 @@ def main():
                    'optimizer': 'Adam', 'loss': 'CrossEntropyLoss',
                    'pretrained': cfg['pretrained'], 'freeze_backbone': cfg['freeze'],
                    'augmentation': cfg['aug'], 'early_stopping_patience': args.patience,
-                   'seed': args.seed, 'best_epoch': len(history['train_loss'])},
+                   'seed': args.seed, 'epochs_ran': len(history['train_loss']),
+                   'best_epoch': best_epoch},
         'train_seconds': train_secs,
         'best_val_loss': float(best_val_loss),
         'test': {k: v for k, v in res.items()

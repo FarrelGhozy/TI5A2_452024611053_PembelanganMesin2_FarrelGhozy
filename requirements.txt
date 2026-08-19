@@ -1,0 +1,18 @@
+# Core deep-learning stack
+# Install PyTorch/torchvision using the CUDA or CPU wheel appropriate for your machine:
+# https://pytorch.org/get-started/locally/
+torch>=2.4,<3
+torchvision>=0.19,<1
+
+# Data, evaluation, and visualization
+numpy>=1.26,<3
+pandas>=2.2,<4
+Pillow>=10,<12
+scikit-learn>=1.5,<2
+matplotlib>=3.8,<4
+seaborn>=0.13,<1
+
+# Notebook execution and evidence
+jupyter>=1.0,<2
+nbconvert>=7.16,<8
+ipykernel>=6.29,<7

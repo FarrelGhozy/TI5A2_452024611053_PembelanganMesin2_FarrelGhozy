@@ -1,304 +1,119 @@
-# Plant Disease Detection using Deep Learning
+# Plant Disease Detection — Final Project Pembelajaran Mesin 2
 
-## Project Overview
+Eksperimen klasifikasi 38 kelas penyakit/kondisi sehat daun pada dataset PlantVillage menggunakan Custom CNN, MobileNetV3-Small, dan EfficientNet-B0.
 
-This project implements plant disease detection using deep learning with transfer learning. The system is designed for mobile deployment using lightweight models optimized for edge devices.
+- **Mahasiswa:** Farrel Ghozy Affifudin
+- **NIM:** 452024611053
+- **Kelas:** TI5 A2
+- **Universitas:** Universitas Darussalam Gontor
+- **Hardware eksperimen:** NVIDIA GeForce RTX 4060, mixed precision FP16
 
-**Author:**  
-- Farrel Ghozy Affifudin (452024611053)
+## File yang Dikumpulkan
 
-**Class:** TI5 A2  
-**University:** Universitas Darussalam Gontor
+`paper/452024611053-Farrel Ghozy Affifudin.pdf`
 
-**Final Project Status:** v2 experiments completed — 4 scenarios run on NVIDIA RTX 4060 (CUDA), paper drafted in `paper/`.
+Paper menggunakan IEEE Conference A4 dua kolom dan berjumlah maksimal lima halaman sesuai `Instruksi Tugas.pdf`.
 
----
+## Hasil Final
 
-## Repository Structure
+Dataset aktual berisi **54.305 citra**, 38 kelas, dengan stratified split:
 
-```
-├── Instruksi Tugas.pdf      # Task instructions (IEEE conference paper)
-├── paper/                   # Final paper (LaTeX + PDF, NIM-named)
+- Training: 43.429
+- Validation: 5.417
+- Testing: 5.459
+
+| Exp | Model | Strategi | LR | Best epoch | Test Acc | Precision macro | Recall macro | F1 macro |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| E1 | Custom CNN (0,54M) | From scratch, baseline | 1e-3 | 14 | 95,09% | 94,85% | 93,17% | 93,39% |
+| E2 | MobileNetV3-Small | ImageNet, frozen backbone | 1e-3 | 12 | 97,47% | 96,79% | 96,18% | 96,41% |
+| E3 | EfficientNet-B0 | ImageNet, frozen backbone | 1e-3 | 11 | 94,98% | 94,17% | 93,19% | 93,48% |
+| E4 | MobileNetV3-Small | ImageNet, full fine-tuning | 1e-4 | 6 | **98,99%** | **98,81%** | **98,15%** | **98,42%** |
+
+E4 menjalankan 10 dari maksimum 12 epoch dan dihentikan oleh early stopping. E1–E3 mencapai batas epoch yang dikonfigurasi. `Best epoch` adalah epoch dengan validation loss terendah; checkpoint yang dievaluasi berasal dari epoch tersebut.
+
+## Konfigurasi
+
+- Framework: PyTorch/torchvision
+- Optimizer: Adam
+- Loss: `torch.nn.CrossEntropyLoss`
+- Batch size: 32
+- Early stopping: patience 4, monitor validation loss
+- Scheduler: ReduceLROnPlateau, factor 0,5, patience 2, minimum LR 1e-6
+- Input: 224×224
+- Normalisasi: ImageNet mean/std
+- Augmentasi training: random resized crop (0,8–1,0), horizontal flip, rotasi ±15°, dan color jitter
+- Validation/testing: resize 256 lalu center crop 224
+- Seed: 42
+
+## Struktur Repository
+
+```text
+├── Instruksi Tugas.pdf
+├── Final_Project_Pembelajaran_Mesin2.ipynb
+├── paper/
 │   ├── plant_disease_detection.tex
 │   ├── plant_disease_detection.pdf
-│   └── 452024611053-Farrel Ghozy Affifudin.pdf   # <-- FILE TO SUBMIT
-└── v2/                      # v2 experiments (PyTorch + CUDA)
-    ├── scripts/             # common.py, prepare_data.py, run_experiment.py
-    └── results/             # training evidence: metrics, curves, CM, error analysis
-        ├── training_report.ipynb   # summary notebook (bukti training)
-        └── run_all.log             # full training log
+│   └── 452024611053-Farrel Ghozy Affifudin.pdf
+└── v2/
+    ├── scripts/
+    │   ├── prepare_data.py
+    │   ├── common.py
+    │   └── run_experiment.py
+    └── results/
+        ├── training_report.ipynb
+        ├── run_all.log
+        └── e1/ ... e4/
 ```
 
----
+Setiap folder `v2/results/e*/` berisi:
 
-## v2 Experiments (Final Project)
+- `metrics.json` dan `test_metrics.json`
+- `history.json`
+- `training_curves.png`
+- `confusion_matrix.png`
+- `classification_report.txt`
+- `per_class_analysis.json`
+- `top_errors.json`
 
-**Dataset:** PlantVillage (Kaggle) — 38 classes, 54,305 images, split 80/10/10 (43,429 / 5,417 / 5,459).
-**Hardware:** NVIDIA RTX 4060, CUDA 12.4, mixed precision FP16. Optimizer Adam, batch 32, early stopping.
+`v2/results/run_all.log` adalah catatan kanonik yang dibentuk dari metrics/history final. Notebook utama dan `training_report.ipynb` membaca artifact final tersebut.
 
-| Exp | Model | Strategy | Test Acc | Precision | Recall | F1 |
-|-----|-------|----------|----------|-----------|--------|-----|
-| E1 | Custom CNN (0.54M) | From scratch (baseline) | **95.09%** | 94.85% | 93.17% | 93.39% |
-| E2 | MobileNetV3-Small | TL, frozen backbone | **97.47%** | 96.79% | 96.18% | 96.41% |
-| E3 | EfficientNet-B0 | TL, frozen backbone | **94.98%** | 94.17% | 93.19% | 93.48% |
-| E4 | MobileNetV3-Small | TL, full fine-tune | **98.99%** | 98.81% | 98.15% | 98.42% |
+## Reproduksi
 
-**Best model:** MobileNetV3-Small fine-tuned (E4) — 98.99% test accuracy.
+### Instalasi
 
-### Reproduce
+Gunakan Python 3.10 atau 3.11. Buat virtual environment lalu instal dependency. Untuk GPU, pilih wheel PyTorch/CUDA yang sesuai dari [pytorch.org](https://pytorch.org/get-started/locally/) sebelum dependency lain.
 
 ```bash
-# 1. Download dataset (Kaggle API token required)
-curl -L -o ~/pm2_v2/data/plantvillage.zip \
-  "https://www.kaggle.com/api/v1/datasets/download/abdallahalidev/plantvillage-dataset" \
-  -H "Authorization: Bearer <KAGGLE_ACCESS_TOKEN>"
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+# Contoh CUDA 12.4; sesuaikan dengan environment:
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+pip install -r requirements.txt
+```
 
-# 2. Prepare split
+Unduh dataset:
+
+https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset
+
+Siapkan split dan jalankan eksperimen:
+
+```bash
 python3 v2/scripts/prepare_data.py
-
-# 3. Run experiments (RTX 4060 / CUDA)
-python3 v2/scripts/run_experiment.py --exp e1 --epochs 15
-python3 v2/scripts/run_experiment.py --exp e2 --epochs 12
-python3 v2/scripts/run_experiment.py --exp e3 --epochs 12
-python3 v2/scripts/run_experiment.py --exp e4 --epochs 12
+python3 v2/scripts/run_experiment.py --exp e1 --epochs 15 --batch 32
+python3 v2/scripts/run_experiment.py --exp e2 --epochs 12 --batch 32
+python3 v2/scripts/run_experiment.py --exp e3 --epochs 12 --batch 32
+python3 v2/scripts/run_experiment.py --exp e4 --epochs 12 --batch 32
 ```
 
-Training evidence (metrics JSON, training curves, confusion matrices, per-class analysis,
-top misclassifications) is stored in `v2/results/<exp>/`. See `v2/results/training_report.ipynb`
-for the summary notebook.
+Default path script:
 
----
+- Dataset: `~/pm2_v2/data/plantvillage_split`
+- Output: `~/pm2_v2/results`
+- Checkpoint: `~/pm2_v2/models`
 
-## Dataset
+Path dapat diganti melalui argumen `--data-root`, `--out-root`, dan `--model-root`.
 
-**PlantVillage Dataset** (Kaggle)  
-- **Total Images:** 54,306 RGB images
-- **Number of Classes:** 38 (healthy + diseased leaves)
-- **Crops:** Tomato, Potato, Apple, Grape, Corn, etc.
-- **Resolution:** Various (resized to 224x224 during preprocessing)
+## Catatan Validitas
 
-**Dataset Split:**
-- Training: 80%
-- Validation: 10%
-- Test: 10%
-
-**Download:** https://www.kaggle.com/abdallahalidev/plantvillage-dataset
-
----
-
-## Architecture
-
-### Models Evaluated
-
-| Model | Description | Parameters | Inference Time |
-|-------|-------------|------------|----------------|
-| **MobileNetV2** | Lightweight CNN with inverted residuals | ~3.5M | ~25 ms |
-| **MobileNetV3-Small** | Optimized for mobile, attention mechanisms | ~2.5M | ~15 ms |
-| **EfficientNet-B0** | Compound scaling method | ~5.3M | ~43 ms |
-
-### Data Preprocessing
-
-1. **Image Resizing:** 224x224 pixels
-2. **Normalization:** [0, 1] range
-3. **Data Augmentation:**
-   - Random horizontal flip (0.5)
-   - Random rotation (±15°)
-   - Random zoom (0.9-1.1)
-   - Random color jitter
-   - Random Gaussian blur
-
----
-
-## Installation
-
-### Prerequisites
-
-```bash
-# Python 3.10+
-python --version
-
-# TensorFlow 2.13+
-pip install tensorflow==2.13.0
-
-# Other dependencies
-pip install numpy matplotlib seaborn scikit-learn
-```
-
-### Clone Repository
-
-```bash
-git clone https://github.com/FarrelGhozy/TI5A2_452024611053_PembelanganMesin2_FarrelGhozy.git
-cd TI5A2_452024611053_PembelanganMesin2_FarrelGhozy
-```
-
-### Setup Dataset
-
-1. Download PlantVillage dataset from Kaggle
-2. Extract to plantvillage_dataset/ directory
-3. Structure should be:
-   ```
-   plantvillage_dataset/
-   ├── train/
-   ├── val/
-   └── test/
-   ```
-
----
-
-## Training
-
-### Run Training Script
-
-```bash
-python scripts/train_model.py
-```
-
-### Training Configuration
-
-```python
-IMG_SIZE = (224, 224)
-BATCH_SIZE = 32
-EPOCHS = 30
-LEARNING_RATE = 1e-4
-```
-
-### Models Trained
-
-The script trains three models:
-1. MobileNetV2 (baseline)
-2. MobileNetV3-Small (optimized)
-3. EfficientNet-B0 (high accuracy)
-
-### Callbacks Used
-
-- EarlyStopping: Stop training if validation loss doesn't improve for 5 epochs
-- ModelCheckpoint: Save best model based on validation accuracy
-- ReduceLROnPlateau: Reduce learning rate when validation loss plateaus
-
----
-
-## Results
-
-### Performance Comparison
-
-| Model | Accuracy | Precision | Recall | F1-Score | Inference Time (ms) |
-|-------|----------|-----------|--------|----------|---------------------|
-| Custom CNN | 82.3% | 81.5% | 80.9% | 81.2% | 8.5 |
-| MobileNetV2 | 91.2% | 90.8% | 91.0% | 90.9% | 25.3 |
-| **MobileNetV3-Small** | **94.7%** | **94.3%** | **94.5%** | **94.4%** | **15.3** |
-| EfficientNet-B0 | 93.2% | 92.8% | 93.0% | 92.9% | 42.7 |
-| Custom CNN + Aug | 85.6% | 84.9% | 85.1% | 85.0% | 9.1 |
-
-### Best Model: MobileNetV3-Small
-
-- Accuracy: 94.7%
-- Precision: 94.3%
-- Recall: 94.5%
-- F1-Score: 94.4%
-- Inference Time: 15.3 ms
-- Model Size: ~2.5 MB (TFLite)
-
-### Output Files
-
-After training, the following files are generated:
-
-```
-models/
-├── plant_disease_mobilenetv3_small_mobilenetv3_small.h5
-├── plant_disease_model.tflite
-├── labels.txt
-├── confusion_matrix.png
-├── training_history.png
-└── plant_disease_mobilenetv3_small_mobilenetv3_small_history.json
-```
-
----
-
-## Deployment
-
-### Convert to TensorFlow Lite
-
-```python
-python scripts/convert_to_tflite.py
-```
-
-### Flutter Integration (Andromeda)
-
-See mobile_app/ directory for Flutter implementation:
-- lib/services/tflite_service.dart
-- lib/services/diagnosis_service.dart
-- lib/screens/camera_screen.dart
-- lib/screens/result_screen.dart
-
-### Dependencies
-
-```yaml
-dependencies:
-  tflite_flutter: ^1.14.0
-  image_picker: ^1.0.7
-  camera: ^0.11.0+2
-  image: ^4.1.7
-  flutter_tts: ^4.0.2
-```
-
----
-
-## Paper
-
-**Title:** Real-Time Plant Disease Detection Using Lightweight Deep Learning with Transfer Learning
-
-**Format:** IEEE Conference Paper
-
-**Status:** Draft (pending dosen approval)
-
-**Files:**
-- tex/plant_disease_detection_proposal.tex (LaTeX source)
-- tex/plant_disease_detection_proposal.pdf (compiled PDF)
-
----
-
-## Evaluation Metrics
-
-### Accuracy
-Accuracy = (TP + TN) / (TP + TN + FP + FN)
-
-### Precision
-Precision = TP / (TP + FP)
-
-### Recall
-Recall = TP / (TP + FN)
-
-### F1-Score
-F1-Score = 2 * (Precision * Recall) / (Precision + Recall)
-
----
-
-## References
-
-1. Agrios, G.N. (2005). Plant Pathology. Academic Press.
-2. Mishra, S., et al. (2011). A comparative study of plant disease detection using image processing techniques.
-3. Kumar, A., et al. (2020). Plant disease detection using MobileNetV2.
-4. Rossow, N., et al. (2018). PlantVillage Dataset.
-5. Sandler, A., et al. (2018). MobileNetV2: Inverted residuals and linear bottlenecks.
-6. Howard, A.G., et al. (2019). MobileNetV3: Inverted residuals and linear bottlenecks.
-7. Tan, M., & Le, Q. (2019). EfficientNet: Rethinking model scaling for convolutional neural networks.
-8. Zhang, Y., et al. (2023). Plant disease detection using EfficientNet-B0.
-
----
-
-## Contributing
-
-This is an individual project for TI5A2 - Pembelajaran Mesin 2. All work done by Farrel Ghozy Affifudin.
-
----
-
-## License
-
-This project is created for educational purposes.
-
----
-
-## Contact
-
-For questions or suggestions, please contact:
-- Farrel Ghozy Affifudin: 452024611053
+Seluruh angka pada paper final berasal dari artifact `metrics.json` dan checkpoint eksperimen nyata. Tidak ada metrik simulasi atau angka placeholder dalam hasil final.
